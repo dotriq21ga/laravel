@@ -7,27 +7,27 @@
     <a href="{{route('login')}}">Đăng nhập</a>
 @endif
 <a href="{{route('get.add_a')}}">Thêm tài khoản</a> 
-@foreach($menus as $menus)
+@foreach($name as $name)
     <table>
         <tr>
             <td>
-                {{$menus->name}}
+                <p><?=$name->name?></p>
             </td>
             <td>
-                <img src="{{ url('public/Image/'.$menus->img) }}"style="height: 100px; width: 150px;">
+                <img src="{{ url('public/Image/'.$name->img) }}"style="height: 100px; width: 150px;">
             </td>
             <td>
-                <a href="{{route('get.update', ['id' => $menus->id])}}">Sửa</a>
+                <a href="{{route('get.update', ['id' => $name->id])}}">Sửa</a>
             </td>
             <td>
-                <form method="post" action="{{route('post.delete', ['id' => $menus->id])}}">
+                <form method="post" action="{{route('post.delete', ['id' => $name->id])}}">
                     @csrf
                     @method('DELETE')
                     <button type = "submit">Xóa</button>
                 </form> 
             </td>
             <td>
-                <a href="{{route('show', ['id' => $menus->id])}}">Xem</a>
+                <a href="{{route('show', ['id' => $name->id])}}">Xem</a>
             </td>
         </tr>
     </table>
