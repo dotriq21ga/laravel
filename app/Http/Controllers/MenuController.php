@@ -8,12 +8,10 @@ use Illuminate\Http\Request;
 
 use App\Models\Menu;
 
-use Illuminate\Support\Facades\DB;
-
 class MenuController extends Controller
 {
     public function index(){
-        $menus = DB::select('select * from menus');
+        $menus = Menu::all();
 
         return view('index',compact('menus'));
     }
@@ -36,14 +34,13 @@ class MenuController extends Controller
         //}
     }
     public function edit($id){
-        $menus = DB::select('select * from menus where id = :id', ['id' =>$id]);
+        $menus = Menu::where('id', $id)->get();
         return view('menu.update',compact('menus'));
     }
     protected function update(Request $request, $id){
         if(!$request->file('img')){
             $name = $request->get('name');
-            $menus = DB::table('menus')
-              ->where('id', $id)
+            $menus = Menu::where('id', $id)
               ->update(['name' => $name]);
             return redirect('/');
         }
@@ -53,14 +50,13 @@ class MenuController extends Controller
             $filename= date('YmdHi').'-'.$file->getClientOriginalName();
             $file-> move(public_path('public/Image'), $filename);
             $img = $filename;
-            $menus = DB::table('menus')
-              ->where('id', $id)
+            $menus = Menu::where('id', $id)
               ->update(['name' => $name , 'img'=>$img]);
             return redirect('/');
         }
     }
     protected function detroy($id){
-        $deleted = DB::table('menus')->where('id', '=', $id)->delete();
+        $deleted = Menu::destroy('id',$id);
         return redirect('/');
     }
 }

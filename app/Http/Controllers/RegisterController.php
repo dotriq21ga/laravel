@@ -16,11 +16,10 @@ class RegisterController extends Controller{
         return view('auth.register');
     }
     protected function create(CreateRequest $request){
-        $data = $request->except('_token');
-        $user = new User;
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->password = Hash::make($data['password']);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
         $user->save();
         return redirect('login')->with('status','Đăng kí thành công'); 
     }   
