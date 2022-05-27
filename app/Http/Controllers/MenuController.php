@@ -8,8 +8,15 @@ use Illuminate\Http\Request;
 
 use App\Models\Menu;
 
+use App\Repositories\MenuRepository;
+
 class MenuController extends Controller
 {
+    protected $menuRepository;
+    public function __construct(MenuRepository $menuRepository) 
+	{ 
+		$this->menuRepository = $menuRepository;
+	}
     public function index(){
         $menus = Menu::all();
 
@@ -34,7 +41,7 @@ class MenuController extends Controller
         //}
     }
     public function edit($id){
-        $menus = Menu::where('id', $id)->get();
+        $menus = $this->menuRepository->getID($id);
         return view('menu.update',compact('menus'));
     }
     protected function update(Request $request, $id){
