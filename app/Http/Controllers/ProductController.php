@@ -10,8 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Product;
 
+use App\Repositories\ProductRepository;
+
 class ProductController extends Controller
 {   
+    protected $productRepository;
+    public function __construct(ProductRepository $productRepository) 
+	{ 
+		$this->productRepository = $productRepository;
+	}
     public function show($id){
 
         //$product = DB::select('select * from products where menu_id = ? and user_id is null', [$id] );
@@ -34,7 +41,7 @@ class ProductController extends Controller
         return redirect('/');
     }
     public function edit($id){
-        $product = Product::where('id', $id)->get();
+        $product = $this->productRepository->getID($id);
         $menus = Menu::all();
         return view('product.update',compact('product','menus'));
     }
