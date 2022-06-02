@@ -8,12 +8,19 @@ use Illuminate\Http\Request;
 
 use App\Models\Menu;
 
+use App\Models\Product;
+
 class MenuController extends Controller
 {
     public function index(){
         $menus = Menu::all();
 
         return view('index',compact('menus'));
+    }
+    public function show($id){
+        //$product = DB::select('select * from products where menu_id = ? and user_id is null', [$id] );
+        $product = Product::where('menu_id', $id)->whereNull('user_id')->get();
+        return view('product.index' ,compact('product'));
     }
     public function create(){
         return view('menu.create');

@@ -13,10 +13,8 @@ use App\Models\Product;
 class ProductController extends Controller
 {   
     public function show($id){
-
-        //$product = DB::select('select * from products where menu_id = ? and user_id is null', [$id] );
-        $product = Product::where('menu_id', $id)->whereNull('user_id')->get();
-        return view('product.index' ,compact('product'));
+        $product = Product::where('id',$id);
+        return view('product.detail',compact('product'));
     }
     public function create(){
         $menus = Menu::all(); 
@@ -39,16 +37,14 @@ class ProductController extends Controller
         return view('product.update',compact('product','menus'));
     }
     protected function update(Request $request, $id){
+        $price = $request->get('price');
+        $menu_id = $request->get('menu_id');
         if(!$request->file('img')){
-            $price = $request->get('price');
-            $menu_id = $request->get('menu_id');
             $product = Product::where('id', $id)
               ->update(['price' => $price,'menu_id'=> $menu_id]);
             return redirect('/');
         }
         else{
-            $price = $request->get('price');
-            $menu_id = $request->get('menu_id');
             $file= $request->file('img');
             $filename= date('YmdHi').'-'.$file->getClientOriginalName();
             $file-> move(public_path('public/Image'), $filename);

@@ -24,14 +24,23 @@ Route::post('/register', [RegisterController::class, 'create']);
 Route::get('/login',[LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/show/{id}',[ProductController::class, 'show'])->name('show');
+Route::get('/show/{id}',[MenuController::class, 'show'])->name('show');
 
 
-Route::group(['prefix' => 'user', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'users', 'middleware' => ['auth']], function () {
         Route::get('/logout',[UserController::class, 'logout'])->name('logout');
+
         Route::get('/profile',[UserController::class, 'profile'])->name('profile');
 
-    Route::group(['prefix' => 'admin', 'middleware' => ['auth','isAdmin']], function () {
+        Route::put('/edit-profile',[UserController::class, 'update'])->name('update-profile');
+
+        Route::get('/edit-password',[UserController::class, 'edit_password'])->name('edit-password');
+
+        Route::put('/reset-password',[UserController::class, 'reset_pasword'])->name('reset-password');
+
+        Route::get('/product/{id}',[ProductController::class, 'show'])->name('detail-product');
+
+    Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
         Route::get('/add',[MenuController::class, 'create']);
         Route::post('/add', [MenuController::class, 'store']);
 
